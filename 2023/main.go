@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -38,8 +39,14 @@ func getNum(line []byte) int {
 	return twoDigitInt
 }
 
+func getNum2(line []byte) int {
+	return 0
+}
+
 func main() {
 	fmt.Println("Hi, Elviie!")
+	second := flag.Bool("second", false, "solve second part of the challenge")
+	flag.Parse()
 
 	f, err := os.Open(filename)
 	if err != nil {
@@ -52,11 +59,16 @@ func main() {
 	scanner.Split(bufio.ScanLines)
 
 	answer := 0
+	twoDigitInt := 0
 
 	for scanner.Scan() {
 		line := scanner.Bytes()
 		if len(line) > 0 {
-			twoDigitInt := getNum(line)
+			if !*second {
+				twoDigitInt = getNum(line)
+			} else {
+				twoDigitInt = getNum2(line)
+			}
 			answer += twoDigitInt
 		}
 	}
