@@ -59,17 +59,15 @@ func main() {
 	scanner.Split(bufio.ScanLines)
 
 	answer := 0
-	twoDigitInt := 0
-
 	for scanner.Scan() {
 		line := scanner.Bytes()
 		if len(line) > 0 {
 			if !*second {
-				twoDigitInt = getNum(line)
+				answer += getNum(line)
 			} else {
-				twoDigitInt = getNum2(line)
+				answer += getNum2(line)
 			}
-			answer += twoDigitInt
+
 		}
 	}
 	fmt.Println("The answer is:", answer)
