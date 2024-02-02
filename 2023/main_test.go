@@ -15,8 +15,8 @@ func TestGetNum(t *testing.T) {
 }
 
 func TestGetNum2(t *testing.T) {
-	lines := []string{"7one718onegfqtdbtxfcmd", "threeninedtr7219", "two2geight", "1b9four"}
-	answers := []int{71, 39, 28, 14}
+	lines := []string{"aaon7one718onegfqtdbtxfcmd", "threeninedtr7219", "two2geight", "1b9four", "123four5six", "123four5"}
+	answers := []int{71, 39, 28, 14, 16, 15}
 	for x := 0; x < len(lines); x++ {
 		number := getNum2([]byte(lines[x]))
 		if number != answers[x] {
