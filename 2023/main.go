@@ -11,6 +11,19 @@ import (
 
 var filename = "dayOneInput"
 
+var digits = map[string]int{
+	"zero":  0,
+	"one":   1,
+	"two":   2,
+	"three": 3,
+	"four":  4,
+	"five":  5,
+	"six":   6,
+	"seven": 7,
+	"eight": 8,
+	"nine":  9,
+}
+
 // func getNum takes a slice of bytes and returns a two digit number
 // it makes out of the first and last digits found in the line
 func getNum(line []byte) int {
@@ -39,12 +52,43 @@ func getNum(line []byte) int {
 	return twoDigitInt
 }
 
+// func getNum2 takes a slice of bytes and returns a two digit number
+// it makes out of the first and last digits found in the line
+// considers strings like "one", "two", etc - as a valid digit
 func getNum2(line []byte) int {
-	return 0
+
+	var digitOne, digitTwo, twoDigitInt int
+	digitOne = -1
+
+	for len(line) > 0 {
+		for word, num := range digits {
+
+			a := []byte(strconv.Itoa(num))[0]
+			if line[0] == a {
+				if digitOne == -1 {
+					digitOne = num
+				}
+				digitTwo = num
+			} else if len(line) >= len(word) {
+				if string(line[:len(word)]) == word {
+					if digitOne == -1 {
+						digitOne = num
+					}
+					digitTwo = num
+				}
+			}
+		}
+		line = line[1:]
+	}
+	if digitOne != -1 {
+		twoDigitInt = digitOne*10 + digitTwo
+	}
+	return twoDigitInt
 }
 
 func main() {
 	fmt.Println("Hi, Elviie!")
+
 	second := flag.Bool("second", false, "solve second part of the challenge")
 	flag.Parse()
 
@@ -67,7 +111,6 @@ func main() {
 			} else {
 				answer += getNum2(line)
 			}
-
 		}
 	}
 	fmt.Println("The answer is:", answer)
