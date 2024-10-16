@@ -50,9 +50,39 @@ loop:
 	return lineID
 }
 
+// func getMinNumOfCubes returns a minimum number of cubes
+// that are necessary to play the game
+func getMinNumOfCubes(set []string) map[string]int {
+	cubes := map[string]int{
+		"red":   0,
+		"green": 0,
+		"blue":  0,
+	}
+	for x := 0; x < len(set); {
+		colour := set[x+1]
+		num, _ := strconv.Atoi(set[x])
+		if num > cubes[colour] {
+			cubes[colour] = num
+		}
+		x += 2
+	}
+	return cubes
+}
+
+// func multCubeNums returns the result of multiplication
+// of all the map values
+func multCubeNums(cubes map[string]int) int {
+	num := 1
+	for _, v := range cubes {
+		num = num * v
+	}
+	return num
+}
+
 func main() {
 	fmt.Println("Hi, Elviie!")
 	idTotal := 0
+	powerSum := 0
 	f, err := os.Open(filename)
 	if err != nil {
 		fmt.Printf("Couldn't open file %s: %v\n", filename, err)
@@ -68,10 +98,14 @@ func main() {
 		lineID, set := parseLine(line)
 		lineID = validateSet(lineID, set)
 		idTotal += lineID
+		cubes := getMinNumOfCubes(set)
+		gamePower := multCubeNums(cubes)
+		powerSum += gamePower
 	}
 	if err := scanner.Err(); err != nil {
 		fmt.Printf("Couldn't read properly from %s: %v\n", filename, err)
 	}
 
 	fmt.Println("Sum of eligible IDs is", idTotal)
+	fmt.Println("Sum of the power of the game sets is", powerSum)
 }
